@@ -1,6 +1,6 @@
 {
   "name": "webcam-selfie-capture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "webcam selfie capture using faceapi.js",
   "main": "index.js",
   "scripts": {
