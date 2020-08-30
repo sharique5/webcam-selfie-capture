@@ -20,6 +20,9 @@ exports.webcamSelfieCapture = {
         this.webcamSelfieCapture.video.addEventListener('play', () => {
             const canvas = faceapi.createCanvasFromMedia(this.webcamSelfieCapture.video)
             document.body.append(canvas)
+            canvas.style.position = "absolute"
+            canvas.style.top = `${this.webcamSelfieCapture.video.offsetTop}px`
+            canvas.style.left = `${this.webcamSelfieCapture.video.offsetLeft}px`
             const displaySize = { width: this.webcamSelfieCapture.video.width, height: this.webcamSelfieCapture.video.height }
             faceapi.matchDimensions(canvas, displaySize)
             setInterval(async () => {
