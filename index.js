@@ -1,38 +1,38 @@
 const faceapi  = require('face-api.js');
 
-exports.webcamSelfieCapture = {
+module.exports = {
     video: null,
-    loadModels: () => {
+    loadModels: function() {
         // async this.webcamSelfieCapture.load()
         Promise.all([
             faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
             faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
             faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
             faceapi.nets.faceExpressionNet.loadFromUri('/models')
-        ]).then(this.webcamSelfieCapture.startVideo)
+        ]).then(this.startVideo)
     },
-    startVideo: () => {
+    startVideo: function() {
         navigator.mediaDevices.getUserMedia(
             { video: {} })
             .then(stream => {
-                this.webcamSelfieCapture.video.srcObject = stream
+                this.video.srcObject = stream
             })
             .catch(err => {
                 console.log(err.name + ": " + err.message);
             })
         
     },
-    setVideoElementId: videoId => {
-        this.webcamSelfieCapture.video = document.getElementById(videoId)
+    setVideoElementId: function(videoId) {
+        this.video = document.getElementById(videoId)
     },
-    setVideoElementEventListener: () => {
-        this.webcamSelfieCapture.video.addEventListener('play', () => {
-            const canvas = faceapi.createCanvasFromMedia(this.webcamSelfieCapture.video)
+    setVideoElementEventListener: function() {
+        this.video.addEventListener('play', () => {
+            const canvas = faceapi.createCanvasFromMedia(this.video)
             document.body.append(canvas)
             canvas.style.position = "absolute"
-            canvas.style.top = `${this.webcamSelfieCapture.video.offsetTop}px`
-            canvas.style.left = `${this.webcamSelfieCapture.video.offsetLeft}px`
-            const displaySize = { width: this.webcamSelfieCapture.video.width, height: this.webcamSelfieCapture.video.height }
+            canvas.style.top = `${this.video.offsetTop}px`
+            canvas.style.left = `${this.video.offsetLeft}px`
+            const displaySize = { width: this.video.width, height: this.video.height }
             faceapi.matchDimensions(canvas, displaySize)
             setInterval(async () => {
                 const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
@@ -44,11 +44,11 @@ exports.webcamSelfieCapture = {
             }, 100)
         })
     },
-    captureSelfie: picContainerId => {
+    captureSelfie: function(picContainerId) {
         let canvas = document.getElementById(picContainerId)
-        canvas.width = this.webcamSelfieCapture.video.videoWidth
-        canvas.height = this.webcamSelfieCapture.video.videoHeight
-        canvas.getContext('2d').drawImage(video, 0, 0, this.webcamSelfieCapture.video.videoWidth, this.webcamSelfieCapture.video.videoHeight)
+        canvas.width = this.video.videoWidth
+        canvas.height = this.video.videoHeight
+        canvas.getContext('2d').drawImage(video, 0, 0, this.video.videoWidth, this.video.videoHeight)
     }
 }
 
