@@ -2,6 +2,15 @@ const faceapi  = require('face-api.js');
 
 exports.webcamSelfieCapture = {
     video: null,
+    loadModels: () => {
+        // async this.webcamSelfieCapture.load()
+        Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+            faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+            faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+            faceapi.nets.faceExpressionNet.loadFromUri('/models')
+        ]).then(this.webcamSelfieCapture.startVideo)
+    },
     startVideo: () => {
         navigator.mediaDevices.getUserMedia(
             { video: {} })
