@@ -34,7 +34,12 @@ exports.webcamSelfieCapture = {
                 faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
             }, 100)
         })
+    },
+    captureSelfie: picContainerId => {
+        let canvas = document.getElementById(picContainerId)
+        canvas.width = this.webcamSelfieCapture.video.videoWidth
+        canvas.height = this.webcamSelfieCapture.video.videoHeight
+        canvas.getContext('2d').drawImage(video, 0, 0, this.webcamSelfieCapture.video.videoWidth, this.webcamSelfieCapture.video.videoHeight)
     }
-    
 }
 
