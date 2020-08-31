@@ -3,7 +3,6 @@ const faceapi  = require('face-api.js');
 module.exports = {
     video: null,
     loadModels: function() {
-        // async this.webcamSelfieCapture.load()
         Promise.all([
             faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
             faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
@@ -20,7 +19,6 @@ module.exports = {
             .catch(err => {
                 console.log(err.name + ": " + err.message);
             })
-        
     },
     setVideoElementId: function(videoId) {
         this.video = document.getElementById(videoId)
