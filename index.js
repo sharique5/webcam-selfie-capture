@@ -8,7 +8,7 @@ module.exports = {
             faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
             faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
             faceapi.nets.faceExpressionNet.loadFromUri('/models')
-        ]).then(this.startVideo)
+        ]).then(this.startVideo())
     },
     startVideo: function() {
         navigator.mediaDevices.getUserMedia(
@@ -28,12 +28,12 @@ module.exports = {
             const canvas = faceapi.createCanvasFromMedia(this.video)
             document.body.append(canvas)
             canvas.style.position = "absolute"
-            canvas.style.top = `${this.video.offsetTop}px`
-            canvas.style.left = `${this.video.offsetLeft}px`
+            canvas.style.top = `${window.scrollY + this.video.getBoundingClientRect().top}px`
+            canvas.style.left = `${window.scrollX + this.video.getBoundingClientRect().left}px`
             const displaySize = { width: this.video.width, height: this.video.height }
             faceapi.matchDimensions(canvas, displaySize)
             setInterval(async () => {
-                const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+                const detections = await faceapi.detectAllFaces(this.video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
                 const resizedDetections = faceapi.resizeResults(detections, displaySize)
                 canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
                 faceapi.draw.drawDetections(canvas, resizedDetections)
@@ -46,7 +46,7 @@ module.exports = {
         let canvas = document.getElementById(picContainerId)
         canvas.width = this.video.videoWidth
         canvas.height = this.video.videoHeight
-        canvas.getContext('2d').drawImage(video, 0, 0, this.video.videoWidth, this.video.videoHeight)
+        canvas.getContext('2d').drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight)
     }
 }
 
